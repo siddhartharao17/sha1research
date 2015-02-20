@@ -65,7 +65,7 @@ public static void main(String args[]){
         {
 
 	try{
-            err = context.SHA1Input(testarray[j], context.length(testarray[j]));
+            err = context.SHA1Input((final String)testarray[j], context.length(testarray[j]));
             }catch(Exception e){
             
                 System.out.println("SHA1Input Error" + e +"\n");

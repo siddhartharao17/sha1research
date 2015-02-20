@@ -128,7 +128,7 @@ public long SHA1Result(long[] Message_Digest)
 }
 
 
-int SHA1Input(long message_array, long length)
+int SHA1Input(final long message_array, long length)
 {
     if (length != 0)
     {
