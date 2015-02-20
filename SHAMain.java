@@ -50,7 +50,7 @@ public static void main(String args[]){
      */
     for(j = 0; j < 4; ++j)
     {
-        System.out.println( "\nTest" + j+1 + repeatcount[j] + "," + testarray[j] + "\n");
+        System.out.println( "\nTest" + (j+1) +"  "+ repeatcount[j] + "," + testarray[j] + "\n");
                 
         context = new MySHA();	/* Object created */
         
