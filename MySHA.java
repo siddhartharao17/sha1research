@@ -1,4 +1,5 @@
 
+//import org.apache.commons.codec.binary.Hex;
 
 public class MySHA{
 
@@ -89,7 +90,7 @@ public MySHA(){
 }*/
 
 
-public long SHA1Result(long[] Message_Digest)
+long SHA1Result(long[] Message_Digest)
 {
 
     int i;
@@ -127,10 +128,47 @@ public long SHA1Result(long[] Message_Digest)
     return 0;
 }
 
+/**public String toHex(String arg) {
+    //return String.format("%x", new BigInteger(1, arg.getBytes("UTF-8")));
+    String hexString = Hex.encodeHexString(arg.getBytes("UTF-8"));
+    return hexString;
+}*/
 
-int SHA1Input(final long message_array, long length)
+/**
+************String to Hex******************
+
+toHex(String str){
+//String str = "testString";
+char[] charArray = str.toCharArray();
+
+/*for (int i=0; i < charArray.length; i++)
+	System.out.print(charArray[i] + "  ");
+
+char ch;
+String[] hex = new String[charArray.length];
+
+for (int j=0; j < charArray.length; j++){	
+ch = charArray[j];
+hex[j] = String.format("%x", (int) ch);
+return 
+}
+
+/*System.out.print("\n\n");
+for (int k=0; k < hex.length; k++)
+	System.out.print(hex[k] + "  ");
+
+}
+
+}*/
+
+
+int SHA1Input(String message_array/*long length*/)
 {
-    if (length != 0)
+
+    char[] charArray = message_array.toCharArray();
+    String[] hex = new String[charArray.length];
+    
+    /**if (length != 0)
     {
         return 0;
     }
@@ -138,7 +176,7 @@ int SHA1Input(final long message_array, long length)
     if (message_array != 0)
     {
         return 1;
-    }
+    }*/
 
     if (Computed > 0)
     {
@@ -150,10 +188,18 @@ int SHA1Input(final long message_array, long length)
     {
          return Corrupted;
     }
-    while(/*length--*/length != 0 && Corrupted != 0)
+    
+    
+    //while(/*length--length != 0 && */ Corrupted != 0)
+    for (int i=0; i < charArray.length && Corrupted != 0; i++ )
     {
-    Message_Block[Message_Block_Index++] =
-                    (message_array & 0xFF);
+    
+    char ch;
+    ch = charArray[i];
+    hex[i] = String.format("%x", (int) ch);
+
+    Message_Block[Message_Block_Index++] = Long.decode(hex[i])  /*(message_array & 0xFF)*/;
+    
 
     Length_Low += 8;
     if (Length_Low == 0)
@@ -171,7 +217,7 @@ int SHA1Input(final long message_array, long length)
         SHA1ProcessMessageBlock();
     }
 
-    message_array++;
+    //message_array++;
     }
 
     return 0;
