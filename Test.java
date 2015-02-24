@@ -35,7 +35,7 @@ public static void main(String[] args)
      System.out.println(test1.stringToHex(s));
 }*/
 
-public static void main(String[] args)
+/**public static void main(String[] args)
 {
 String str = "testString";
 char[] charArray = str.toCharArray();
@@ -53,6 +53,16 @@ hex[j] = String.format("%x", (int) ch);
 System.out.print("\n\n");
 for (int k=0; k < hex.length; k++)
 	System.out.print(hex[k] + "  ");
+
+}*/
+
+public static void main(String[] args){
+
+int a = 2;
+//short b = 3;
+int c = a << 3;
+
+System.out.println(c);
 
 }
 }

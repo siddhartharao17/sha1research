@@ -27,14 +27,14 @@ void SHA1ProcessMessageBlock(SHA1Context *);
 */
 
     //public final long SHA1HashSize = 20;
-    long[] Intermediate_Hash = new long[5]; /* Message Digest  */
+    int[] Intermediate_Hash = new int[5]; /* Message Digest  */
 
-    long Length_Low;            /* Message length in bits      */
-    long Length_High;           /* Message length in bits      */
+    int Length_Low;            /* Message length in bits      */
+    int Length_High;           /* Message length in bits      */
 
                                /* Index into message block array   */
     int Message_Block_Index;
-    long[] Message_Block = new long[64];      /* 512-bit message blocks      */
+    int[] Message_Block = new int[64];      /* 512-bit message blocks      */
 
     int Computed;               /* Is the digest computed?         */
     int Corrupted;             /* Is the message digest corrupted? */
@@ -90,10 +90,10 @@ public MySHA(){
 }*/
 
 
-long SHA1Result(long[] Message_Digest)
+int SHA1Result(int[] Message_Digest)
 {
 
-    int i;
+	int i;
     
     if (Message_Digest.equals(null))
     {
@@ -121,8 +121,7 @@ long SHA1Result(long[] Message_Digest)
 
     for(i = 0; i < 20; ++i)
     {
-        Message_Digest[i] = Intermediate_Hash[i>>2]
-                            >> 8 * ( 3 - ( i & 0x03 ) );
+        Message_Digest[i] = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
     }
 
     return 0;
@@ -166,7 +165,7 @@ int SHA1Input(String message_array/*, long length*/)
 {
 
     char[] charArray = message_array.toCharArray();
-    String[] hex = new String[charArray.length];
+    int[] hex = new int[charArray.length];
     
     /**if (length != 0)
     {
@@ -189,16 +188,20 @@ int SHA1Input(String message_array/*, long length*/)
          return Corrupted;
     }
     
-    
+    char ch;
     //while(/*length--length != 0 && */ Corrupted != 0)
-    for (int i=0; i < charArray.length && Corrupted != 0; i++ )
+    for (int i = 0; i < charArray.length && Corrupted != 0; i++ )
     {
     
-    char ch;
     ch = charArray[i];
-    hex[i] = String.format("%x", (int) ch);
+    //hex[i] = String.format("%02x", (int) ch);
 
-    Message_Block[Message_Block_Index++] = Long.decode(hex[i])  /*(message_array & 0xFF)*/;
+    hex[i] = (int)ch & 0xFF;
+    
+    System.out.println(hex[i]);
+    
+    
+    Message_Block[Message_Block_Index++] = hex[i]; /*Long.decode(hex[i])*/  /*(message_array & 0xFF)*/
     
 
     Length_Low += 8;
@@ -226,16 +229,16 @@ int SHA1Input(String message_array/*, long length*/)
 
 void SHA1ProcessMessageBlock()
 {
-    final long[] K =    {       /* Constants defined in SHA-1  */ 
+    final int[] K =    {       /* Constants defined in SHA-1  */ 
                             0x5A827999,
                             0x6ED9EBA1,
                             0x8F1BBCDC,
                             0xCA62C1D6
                             };
     int       t;                 /* Loop counter                */
-    long      temp;              /* Temporary word value        */
-    long[]    W = new long[80];  /* Word sequence               */
-    long      A, B, C, D, E;     /* Word buffers                */
+    int      temp;              /* Temporary word value        */
+    int[]    W = new int[80];  /* Word sequence               */
+    int      A, B, C, D, E;     /* Word buffers                */
 
     /*
      *  Initialize the first 16 words in the array W
@@ -250,7 +253,7 @@ void SHA1ProcessMessageBlock()
 
     for(t = 16; t < 80; t++)
     {
-                        long x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
+                        int x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
                         W[t] = ((x << 1) | (x >>> 31));                
     }
 
