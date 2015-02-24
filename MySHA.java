@@ -162,7 +162,7 @@ for (int k=0; k < hex.length; k++)
 }*/
 
 
-int SHA1Input(String message_array/*long length*/)
+int SHA1Input(String message_array/*, long length*/)
 {
 
     char[] charArray = message_array.toCharArray();
