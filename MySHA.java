@@ -1,5 +1,4 @@
 
-//import org.apache.commons.codec.binary.Hex;
 
 public class MySHA{
 
@@ -27,17 +26,17 @@ void SHA1ProcessMessageBlock(SHA1Context *);
 */
 
     //public final long SHA1HashSize = 20;
-    int[] Intermediate_Hash = new int[5]; /* Message Digest  */
+    long[] Intermediate_Hash = new long[5]; /* Message Digest  */
 
-    int Length_Low;            /* Message length in bits      */
-    int Length_High;           /* Message length in bits      */
+    long Length_Low;            /* Message length in bits      */
+    long Length_High;           /* Message length in bits      */
 
                                /* Index into message block array   */
     int Message_Block_Index;
-    int[] Message_Block = new int[64];      /* 512-bit message blocks      */
+    short[] Message_Block = new short[64];      /* 512-bit message blocks      */
 
-    int Computed;               /* Is the digest computed?         */
-    int Corrupted;             /* Is the message digest corrupted? */
+//    int Computed;               /* Is the digest computed?         */
+//    int Corrupted;             /* Is the message digest corrupted? */
     
 
 /**int SHA1Reset(SHA1Context *context)
@@ -80,8 +79,8 @@ public MySHA(){
      Intermediate_Hash[3]   = 0x10325476;
      Intermediate_Hash[4]   = 0xC3D2E1F0;
 
-     Computed   = 0;
-     Corrupted  = 0;
+//     Computed   = 0;
+//     Corrupted  = 0;
 }
 
 /*public long SHA1Reset(){
@@ -90,12 +89,12 @@ public MySHA(){
 }*/
 
 
-int SHA1Result(int[] Message_Digest)
+int SHA1Result(short[] Message_Digest)
 {
 
 	int i;
     
-    if (Message_Digest.equals(null))
+/*    if (Message_Digest.equals(null))
     {
         return 1;
     }
@@ -106,22 +105,25 @@ int SHA1Result(int[] Message_Digest)
     }
 
     if (Computed == 0)
-    {
+    {*/
         SHA1PadMessage();
+        
         for(i=0; i<64; ++i)
         {
             /* message may be sensitive, clear it out */
             Message_Block[i] = 0;
         }
+        
         Length_Low = 0;    /* and clear length */
         Length_High = 0;
-        Computed = 1;
+        //Computed = 1;
 
-    }
+    //}
 
     for(i = 0; i < 20; ++i)
     {
-        Message_Digest[i] = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
+        long x = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
+        Message_Digest[i] = (short)x;
     }
 
     return 0;
@@ -177,7 +179,7 @@ int SHA1Input(String message_array/*, long length*/)
         return 1;
     }*/
 
-    if (Computed > 0)
+/*    if (Computed > 0)
     {
         Corrupted = 3;
         return 3;
@@ -186,11 +188,11 @@ int SHA1Input(String message_array/*, long length*/)
     if (Corrupted > 0)
     {
          return Corrupted;
-    }
+    }*/
     
     char ch;
     //while(/*length--length != 0 && */ Corrupted != 0)
-    for (int i = 0; i < charArray.length && Corrupted != 0; i++ )
+    for (int i = 0; i < charArray.length /*&& Corrupted != 0*/; i++ )
     {
     
     ch = charArray[i];
@@ -198,10 +200,9 @@ int SHA1Input(String message_array/*, long length*/)
 
     hex[i] = (int)ch & 0xFF;
     
-    System.out.println(hex[i]);
     
     
-    Message_Block[Message_Block_Index++] = hex[i]; /*Long.decode(hex[i])*/  /*(message_array & 0xFF)*/
+    Message_Block[Message_Block_Index++] = (short)hex[i]; /*Long.decode(hex[i])*/  /*(message_array & 0xFF)*/
     
 
     Length_Low += 8;
@@ -211,7 +212,7 @@ int SHA1Input(String message_array/*, long length*/)
         if (Length_High == 0)
         {
             /* Message is too long */
-            Corrupted = 1;
+            //Corrupted = 1;
         }
     }
 
@@ -229,16 +230,16 @@ int SHA1Input(String message_array/*, long length*/)
 
 void SHA1ProcessMessageBlock()
 {
-    final int[] K =    {       /* Constants defined in SHA-1  */ 
+    final long[] K =    {       /* Constants defined in SHA-1  */ 
                             0x5A827999,
                             0x6ED9EBA1,
                             0x8F1BBCDC,
                             0xCA62C1D6
                             };
-    int       t;                 /* Loop counter                */
-    int      temp;              /* Temporary word value        */
-    int[]    W = new int[80];  /* Word sequence               */
-    int      A, B, C, D, E;     /* Word buffers                */
+    int      t;                 /* Loop counter                */
+    long      temp;              /* Temporary word value        */
+    long[]    W = new long[80];   /* Word sequence               */
+    long     A, B, C, D, E;     /* Word buffers                */
 
     /*
      *  Initialize the first 16 words in the array W
@@ -253,7 +254,7 @@ void SHA1ProcessMessageBlock()
 
     for(t = 16; t < 80; t++)
     {
-                        int x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
+                        long x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
                         W[t] = ((x << 1) | (x >>> 31));                
     }
 
@@ -357,14 +358,27 @@ void SHA1PadMessage()
     /*
      *  Store the message length as the last 8 octets
      */
-    Message_Block[56] = Length_High >> 24;
-    Message_Block[57] = Length_High >> 16;
-    Message_Block[58] = Length_High >> 8;
-    Message_Block[59] = Length_High;
-    Message_Block[60] = Length_Low >> 24;
-    Message_Block[61] = Length_Low >> 16;
-    Message_Block[62] = Length_Low >> 8;
-    Message_Block[63] = Length_Low;
+    
+    long y = Length_High >> 24;
+    Message_Block[56] = (short)y;
+    
+    long z = Length_High >> 16;
+    Message_Block[57] = (short)z;
+    
+    long w = Length_High >> 8;
+    Message_Block[58] = (short)w;
+    Message_Block[59] = (short)Length_High;
+    
+    
+    y = Length_Low >> 24;
+    Message_Block[60] = (short)y;
+    
+    z = Length_Low >> 16;
+    Message_Block[61] = (short)z;
+    
+    w = Length_Low >> 8;
+    Message_Block[62] = (short)w;
+    Message_Block[63] = (short)Length_Low;
 
     SHA1ProcessMessageBlock();
 }
