@@ -1,8 +1,8 @@
-
+import java.util.Scanner;
 
 public class MySHA{
 
-
+Scanner in = new Scanner(System.in);
 /**public enum Msg{
     shaSuccess = 0,
     shaNull,            /* Null pointer parameter
@@ -26,17 +26,17 @@ void SHA1ProcessMessageBlock(SHA1Context *);
 */
 
     //public final long SHA1HashSize = 20;
-    long[] Intermediate_Hash = new long[5]; /* Message Digest  */
+    int[] Intermediate_Hash = new int[5]; /* Message Digest  */
 
-    long Length_Low;            /* Message length in bits      */
-    long Length_High;           /* Message length in bits      */
+    int Length_Low;            /* Message length in bits      */
+    int Length_High;           /* Message length in bits      */
 
                                /* Index into message block array   */
     int Message_Block_Index;
     short[] Message_Block = new short[64];      /* 512-bit message blocks      */
 
-//    int Computed;               /* Is the digest computed?         */
-//    int Corrupted;             /* Is the message digest corrupted? */
+    //int Computed;               /* Is the digest computed?         */
+    //int Corrupted;             /* Is the message digest corrupted? */
     
 
 /**int SHA1Reset(SHA1Context *context)
@@ -81,6 +81,7 @@ public MySHA(){
 
 //     Computed   = 0;
 //     Corrupted  = 0;
+
 }
 
 /*public long SHA1Reset(){
@@ -104,11 +105,11 @@ int SHA1Result(short[] Message_Digest)
         return Corrupted;
     }
 
-    if (Computed == 0)
-    {*/
+    if (Computed == 0)*/
+    //{
         SHA1PadMessage();
         
-        for(i=0; i<64; ++i)
+        for(i=0; i < 64; ++i)
         {
             /* message may be sensitive, clear it out */
             Message_Block[i] = 0;
@@ -120,20 +121,15 @@ int SHA1Result(short[] Message_Digest)
 
     //}
 
-    for(i = 0; i < 20; ++i)
+    for(i = 0; i < 5; ++i)
     {
-        long x = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
+        int x = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
         Message_Digest[i] = (short)x;
     }
 
     return 0;
 }
 
-/**public String toHex(String arg) {
-    //return String.format("%x", new BigInteger(1, arg.getBytes("UTF-8")));
-    String hexString = Hex.encodeHexString(arg.getBytes("UTF-8"));
-    return hexString;
-}*/
 
 /**
 ************String to Hex******************
@@ -163,23 +159,23 @@ for (int k=0; k < hex.length; k++)
 }*/
 
 
-int SHA1Input(String message_array/*, long length*/)
+int SHA1Input(char[] message_array, int length)
 {
 
-    char[] charArray = message_array.toCharArray();
-    int[] hex = new int[charArray.length];
-    
-    /**if (length != 0)
+    //char[] charArray = message_array.toCharArray();
+    //int[] hex = new int[length];
+
+    /**if (length == 0)
     {
         return 0;
     }
 
-    if (message_array != 0)
+    if (message_array.equals(null))
     {
         return 1;
     }*/
 
-/*    if (Computed > 0)
+    /*if (Computed > 0)
     {
         Corrupted = 3;
         return 3;
@@ -189,39 +185,66 @@ int SHA1Input(String message_array/*, long length*/)
     {
          return Corrupted;
     }*/
+    System.out.print(message_array[0]);
+        System.out.print(length);
+    in.nextLine();
     
     char ch;
+    int hex;
     //while(/*length--length != 0 && */ Corrupted != 0)
-    for (int i = 0; i < charArray.length /*&& Corrupted != 0*/; i++ )
+    for (int i = 0; i < length /*&& Corrupted != 0*/; ++i )
     {
+        System.out.println("Enters for loop");
+        in.nextLine();
     
-    ch = charArray[i];
+    ch = message_array[i];
+    
+    
+    System.out.print(ch);
+    in.nextLine();
+    
     //hex[i] = String.format("%02x", (int) ch);
 
-    hex[i] = (int)ch & 0xFF;
+    hex = (int)ch & 0xFF;
     
-    
-    
-    Message_Block[Message_Block_Index++] = (short)hex[i]; /*Long.decode(hex[i])*/  /*(message_array & 0xFF)*/
-    
+   /* System.out.printf("hex value is %1$x, %1$X\n", test );
+    System.out.printf("hex value is %1$#x, %1$#X\n", test );
+    System.out.print(test);*/
 
+    System.out.printf("%1$x", hex);
+    in.nextLine();
+    
+    //hex = test << 8;
+    
+    //System.out.print(hex);
+    //in.nextLine();   
+    
+    Message_Block[Message_Block_Index++] = (short)hex; 
+    
+    short xyz = (short)hex;
+    System.out.printf("%1$x", xyz);
+    in.nextLine();
+    
     Length_Low += 8;
-    if (Length_Low == 0)
+    System.out.print(Length_Low);
+    in.nextLine();
+    
+    /*if (Length_Low == 0)
     {
         Length_High++;
         if (Length_High == 0)
         {
-            /* Message is too long */
-            //Corrupted = 1;
+            /* Message is too long 
+            Corrupted = 1;
         }
-    }
+    }*/
 
     if (Message_Block_Index == 64)
     {
         SHA1ProcessMessageBlock();
     }
 
-    //message_array++;
+
     }
 
     return 0;
@@ -230,31 +253,54 @@ int SHA1Input(String message_array/*, long length*/)
 
 void SHA1ProcessMessageBlock()
 {
-    final long[] K =    {       /* Constants defined in SHA-1  */ 
+
+System.out.println("In SHA1ProcessMessageBlock method");
+
+    final int K[] =    {       /* Constants defined in SHA-1   */
                             0x5A827999,
                             0x6ED9EBA1,
                             0x8F1BBCDC,
                             0xCA62C1D6
                             };
     int      t;                 /* Loop counter                */
-    long      temp;              /* Temporary word value        */
-    long[]    W = new long[80];   /* Word sequence               */
-    long     A, B, C, D, E;     /* Word buffers                */
+    int      temp;              /* Temporary word value        */
+    int[]    W = new int[80];   /* Word sequence               */
+    int     A, B, C, D, E;     /* Word buffers                */
 
     /*
      *  Initialize the first 16 words in the array W
      */
+    int test; 
     for(t = 0; t < 16; t++)
     {
-        W[t] = Message_Block[t * 4] << 24;
-        W[t] |= Message_Block[t * 4 + 1] << 16;
-        W[t] |= Message_Block[t * 4 + 2] << 8;
-        W[t] |= Message_Block[t * 4 + 3];
+    System.out.printf("---------------Iteration: %d-----------------\n\n",t);
+        test = Message_Block[t * 4] << 24;
+        W[t] = test;
+        System.out.printf("%1$x\n", test);
+    in.nextLine();
+    
+        test = Message_Block[t * 4 + 1] << 16;
+        W[t] |= test;
+        System.out.printf("%1$x\n", test);
+        System.out.printf("%1$x\n", W[t]);
+    in.nextLine();
+    
+        test = Message_Block[t * 4 + 2] << 8;
+        W[t] |= test;
+        System.out.printf("%1$x\n", test);
+        System.out.printf("%1$x\n", W[t]);
+    in.nextLine();
+    
+        test = Message_Block[t * 4 + 3];
+        W[t] |= test;
+        System.out.printf("%1$x\n", test);
+        System.out.printf("%1$x\n", W[t]);
+    in.nextLine();
     }
 
     for(t = 16; t < 80; t++)
     {
-                        long x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
+                        int x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
                         W[t] = ((x << 1) | (x >>> 31));                
     }
 
@@ -264,18 +310,36 @@ void SHA1ProcessMessageBlock()
     D = Intermediate_Hash[3];
     E = Intermediate_Hash[4];
 
+int q,y,e,r;
 /** First 20 rounds */
     for(t = 0; t < 20; t++)
     {
-        temp =  (A << 5) + ((B & C) | ((~B) & D)) + E + W[t] + K[0];
+    System.out.printf("Entered Round%d...\n\n",t);
+    	q = (A << 5) ;
+    	System.out.printf("%1$x", q);
+    in.nextLine();
+    
+    	y = ((B & C) | ((~B) & D));
+    	System.out.printf("%1$x", y);
+    in.nextLine(); 
+    
+    	e = E ;
+    	System.out.printf("%1$x", e);
+    in.nextLine();
+    
+    	r = W[t] + K[0];
+    	System.out.printf("%1$x", r);
+    in.nextLine();
+    
+        temp =  q + y + e + r;
         E = D;
         D = C;
         C = (B >>> 2);
-
-
         B = A;
-     
         A = temp;
+        
+    System.out.printf("%1$x", temp);
+    in.nextLine();
     }
 
 /** Next 20 rounds */
@@ -287,6 +351,8 @@ void SHA1ProcessMessageBlock()
         C = (B >>> 2);
         B = A;
         A = temp;
+        System.out.printf("%1$x", temp);
+    in.nextLine();
     }
 
 /** Next 20 rounds */
@@ -298,6 +364,8 @@ void SHA1ProcessMessageBlock()
         C = (B >>> 2);
         B = A;
         A = temp;
+        System.out.printf("%1$x", temp);
+    in.nextLine();
     }
 
 /** Next 20 rounds */
@@ -309,6 +377,8 @@ void SHA1ProcessMessageBlock()
         C = (B >>> 2);
         B = A;
         A = temp;
+        System.out.printf("%1$x", temp);
+    in.nextLine();
     }
 
     Intermediate_Hash[0] += A;
@@ -329,10 +399,11 @@ void SHA1PadMessage()
      *  block, process it, and then continue padding into a second
      *  block.
      */
+    System.out.println("Inside SHA1PadMessage method");
     
     if (Message_Block_Index > 55)
     {
-        Message_Block[Message_Block_Index++] = 0x80;
+        Message_Block[Message_Block_Index++] = (short)0x80;
         while(Message_Block_Index < 64)
         {
             Message_Block[Message_Block_Index++] = 0;
@@ -347,7 +418,13 @@ void SHA1PadMessage()
     }
     else
     {
-        Message_Block[Message_Block_Index++] = 0x80;
+        Message_Block[Message_Block_Index++] = (short)0x80;
+        
+        short abc = (short)0x80;
+        System.out.printf("%1$x", abc);
+        //System.out.printf("%1$x", W[t]);
+    in.nextLine();
+        
         while(Message_Block_Index < 56)
         {
 
@@ -378,9 +455,10 @@ void SHA1PadMessage()
     
     w = Length_Low >> 8;
     Message_Block[62] = (short)w;
-    Message_Block[63] = (short)Length_Low;
+    Message_Block[63] = (short)Length_Low; 
 
     SHA1ProcessMessageBlock();
+
 }
 
 }

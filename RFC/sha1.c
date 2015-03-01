@@ -137,10 +137,16 @@ int SHA1Result( SHA1Context *context,
 
     }
 
+	uint8_t test1;
     for(i = 0; i < SHA1HashSize; ++i)
     {
-        Message_Digest[i] = context->Intermediate_Hash[i>>2]
-                            >> 8 * ( 3 - ( i & 0x03 ) );
+    
+        test1 = context->Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
+        printf("\n%x >> 8 * ( 3 - ( %d & 0x03) )", context->Intermediate_Hash[i>>2], i);
+        getchar();
+        Message_Digest[i] = test1;
+        printf("\n\n%x",test1);
+        getchar();
     }
 
     return shaSuccess;
@@ -170,6 +176,7 @@ int SHA1Input(    SHA1Context    *context,
                   const uint8_t  *message_array,
                   unsigned       length)
 {
+    
     if (!length)
     {
         return shaSuccess;
@@ -190,12 +197,18 @@ int SHA1Input(    SHA1Context    *context,
     {
          return context->Corrupted;
     }
+    
+    uint8_t test;
     while(length-- && !context->Corrupted)
     {
-    context->Message_Block[context->Message_Block_Index++] =
-                    (*message_array & 0xFF);
+    
+    test = (*message_array & 0xFF);
+    printf("%x", test);
+    getchar();
+    context->Message_Block[context->Message_Block_Index++] = test;
 
     context->Length_Low += 8;
+    
     if (context->Length_Low == 0)
     {
         context->Length_High++;
@@ -211,7 +224,9 @@ int SHA1Input(    SHA1Context    *context,
         SHA1ProcessMessageBlock(context);
     }
 
+printf("%c\n", *message_array);
     message_array++;
+    
     }
 
     return shaSuccess;
@@ -261,12 +276,32 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
     /*
      *  Initialize the first 16 words in the array W
      */
+     uint32_t test;
     for(t = 0; t < 16; t++)
     {
-        W[t] = context->Message_Block[t * 4] << 24;
-        W[t] |= context->Message_Block[t * 4 + 1] << 16;
-        W[t] |= context->Message_Block[t * 4 + 2] << 8;
-        W[t] |= context->Message_Block[t * 4 + 3];
+    	printf("---------------Iteration: %d-----------------\n\n",t);
+        test = context->Message_Block[t * 4] << 24;
+        W[t] = test;
+        printf("%x", test);
+        getchar();
+        
+        test = context->Message_Block[t * 4 + 1] << 16;
+        W[t] |= test;
+        printf("%x\n", test);
+        printf("%x\n", W[t]);
+        getchar();
+        
+        test = context->Message_Block[t * 4 + 2] << 8;
+        W[t] |= test;
+        printf("%x\n", test);
+        printf("%x\n", W[t]);
+        getchar();
+        
+        test = context->Message_Block[t * 4 + 3];
+        W[t] |= test;
+        printf("%x\n", test);
+        printf("%x", W[t]);
+        getchar();
     }
 
     for(t = 16; t < 80; t++)
@@ -280,19 +315,39 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
     D = context->Intermediate_Hash[3];
     E = context->Intermediate_Hash[4];
 
+int q,y,e,r;
 /** First 20 rounds */
     for(t = 0; t < 20; t++)
     {
-        temp =  SHA1CircularShift(5,A) +
-                ((B & C) | ((~B) & D)) + E + W[t] + K[0];
+    
+    printf("Entered Round%d...\n\n",t);
+    
+    	q = SHA1CircularShift(5,A); 
+    	printf("%x", q);
+    getchar();
+    
+    	y = ((B & C) | ((~B) & D));
+    	printf("%x", y);
+    getchar(); 
+    
+    	e = E ;
+    	printf("%x", e);
+    getchar();
+    
+    	r = W[t] + K[0];
+    	printf("%x", r);
+    getchar();
+    
+        temp =  q + y + e + r;
+                
         E = D;
         D = C;
         C = SHA1CircularShift(30,B);
-
-
         B = A;
-     
         A = temp;
+        
+        printf("%x",temp); 
+        getchar();
     }
 
 /** Next 20 rounds */
@@ -304,6 +359,9 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
         C = SHA1CircularShift(30,B);
         B = A;
         A = temp;
+        
+        printf("%x",temp); 
+        getchar();
     }
 
 /** Next 20 rounds */
@@ -316,6 +374,9 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
         C = SHA1CircularShift(30,B);
         B = A;
         A = temp;
+        
+        printf("%x",temp); 
+        getchar();
     }
 
 /** Next 20 rounds */
@@ -327,13 +388,26 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
         C = SHA1CircularShift(30,B);
         B = A;
         A = temp;
+        
+        printf("%x",temp); 
+        getchar();
     }
 
+    
     context->Intermediate_Hash[0] += A;
+    printf("%x",context->Intermediate_Hash[0]);
+    
     context->Intermediate_Hash[1] += B;
+    printf("%x",context->Intermediate_Hash[1]);
+    
     context->Intermediate_Hash[2] += C;
+    printf("%x",context->Intermediate_Hash[2]);
+    
     context->Intermediate_Hash[3] += D;
+    printf("%x",context->Intermediate_Hash[3]);
+    
     context->Intermediate_Hash[4] += E;
+    printf("%x",context->Intermediate_Hash[4]);
 
     context->Message_Block_Index = 0;
 }
@@ -403,6 +477,7 @@ void SHA1PadMessage(SHA1Context *context)
     context->Message_Block[57] = context->Length_High >> 16;
     context->Message_Block[58] = context->Length_High >> 8;
     context->Message_Block[59] = context->Length_High;
+    
     context->Message_Block[60] = context->Length_Low >> 24;
     context->Message_Block[61] = context->Length_Low >> 16;
     context->Message_Block[62] = context->Length_Low >> 8;

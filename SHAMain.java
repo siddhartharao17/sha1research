@@ -5,7 +5,7 @@ public class SHAMain{
 
 public static void main(String args[]){
 
-String testarray = "sid";
+String testarray = "abc";
 
 
 String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D";
@@ -13,7 +13,6 @@ String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9
 /**
 	Reference created of class MySHA
 */
-    //SHAMain s1 = new SHAMain();
     
     MySHA context;
     
@@ -27,8 +26,9 @@ String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9
                 
         context = new MySHA();	/* Object created */
         
+   	char[] charArray = testarray.toCharArray();
     
-        context.SHA1Input(testarray);
+        context.SHA1Input(charArray, testarray.length());
     
        	context.SHA1Result(Message_Digest);
          

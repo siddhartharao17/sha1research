@@ -36,7 +36,7 @@
 #define TEST3   "a"
 #define TEST4a  "01234567012345670123456701234567"
 #define TEST4b  "01234567012345670123456701234567"
-    /* an exact multiple of 512 bits */
+    /* an exact multiple of 512 bits */ 
 #define TEST4   TEST4a TEST4b
 char *testarray[4] =
 {
@@ -46,7 +46,7 @@ char *testarray[4] =
     TEST4
 };
 long int repeatcount[4] = { 1, 1, 1000000, 10 };
-char *resultarray[4] =
+char *resultarray[4] = 
 {
     "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D",
     "84 98 3E 44 1C 3B D2 6E BA AE 4A A1 F9 51 29 E5 E5 46 70 F1",
@@ -69,7 +69,9 @@ int main()
                 j+1,
                 repeatcount[j],
                 testarray[j]);
-
+	
+	printf("");
+	
         err = SHA1Reset(&sha);
         if (err)
         {

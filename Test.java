@@ -2,37 +2,12 @@
 class Test
 {
 
-/**public static String stringToHex(String base)
-    {
-     StringBuffer buffer = new StringBuffer();
-     int intValue;
-     for(int x = 0; x < base.length(); x++)
-         {
-         int cursor = 0;
-         intValue = base.charAt(x);
-         String binaryChar = new String(Integer.toBinaryString(base.charAt(x)));
-         for(int i = 0; i < binaryChar.length(); i++)
-             {
-             if(binaryChar.charAt(i) == '1')
-                 {
-                 cursor += 1;
-             }
-         }
-         if((cursor % 2) > 0)
-             {
-             intValue += 128;
-         }
-         buffer.append(Integer.toHexString(intValue) + " ");
-     }
-     return buffer.toString();
-}
-
-public static void main(String[] args)
-    {
-    Test test1 = new Test();
+/*public static void main(String[] args)
+{
+     Test test1 = new Test();
      String s = "abc";
      System.out.println(s);
-     System.out.println(test1.stringToHex(s));
+
 }*/
 
 /**public static void main(String[] args)
@@ -43,11 +18,16 @@ char[] charArray = str.toCharArray();
 for (int i=0; i < charArray.length; i++)
 	System.out.print(charArray[i] + "  ");
 
-char ch;
+char ch; int hexToInt;
 String[] hex = new String[charArray.length];
+
 for (int j=0; j < charArray.length; j++){	
 ch = charArray[j];
-hex[j] = String.format("%x", (int) ch);
+
+//hex[j] = String.format("%x", (int)ch);
+hex[j] = Integer.toHexString((int)ch);
+hexToInt = Integer.parseInt(hex[j],16);
+
 }
 
 System.out.print("\n\n");
@@ -58,11 +38,15 @@ for (int k=0; k < hex.length; k++)
 
 public static void main(String[] args){
 
-int a = 2;
+/*char a = 'A';
 //short b = 3;
-int c = a << 3;
+int c = (int)a & 0xFF;
 
-System.out.println(c);
+System.out.println(c);*/
 
+
+int a  = 0x67452301;
+int b = a << 5;
+System.out.printf("%1$x",b);
 }
 }
