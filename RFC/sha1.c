@@ -320,7 +320,7 @@ int q,y,e,r;
     for(t = 0; t < 20; t++)
     {
     
-    printf("Entered Round%d...\n\n",t);
+    printf("Loop1 -> Entered Round%d...\n\n",t);
     
     	q = SHA1CircularShift(5,A); 
     	printf("%x", q);
@@ -353,6 +353,7 @@ int q,y,e,r;
 /** Next 20 rounds */
     for(t = 20; t < 40; t++)
     {
+    printf("Loop2 -> Entered Round%d...\n\n",t);
         temp = SHA1CircularShift(5,A) + (B ^ C ^ D) + E + W[t] + K[1];
         E = D;
         D = C;
@@ -367,6 +368,7 @@ int q,y,e,r;
 /** Next 20 rounds */
     for(t = 40; t < 60; t++)
     {
+    printf("Loop3 -> Entered Round%d...\n\n",t);
         temp = SHA1CircularShift(5,A) +
                ((B & C) | (B & D) | (C & D)) + E + W[t] + K[2];
         E = D;
@@ -382,6 +384,7 @@ int q,y,e,r;
 /** Next 20 rounds */
     for(t = 60; t < 80; t++)
     {
+    printf("Loop4 -> Entered Round%d...\n\n",t);
         temp = SHA1CircularShift(5,A) + (B ^ C ^ D) + E + W[t] + K[3];
         E = D;
         D = C;

@@ -33,7 +33,7 @@ void SHA1ProcessMessageBlock(SHA1Context *);
 
                                /* Index into message block array   */
     int Message_Block_Index;
-    short[] Message_Block = new short[64];      /* 512-bit message blocks      */
+    byte[] Message_Block = new byte[64];      /* 512-bit message blocks      */
 
     //int Computed;               /* Is the digest computed?         */
     //int Corrupted;             /* Is the message digest corrupted? */
@@ -90,7 +90,7 @@ public MySHA(){
 }*/
 
 
-int SHA1Result(short[] Message_Digest)
+int SHA1Result(byte[] Message_Digest)
 {
 
 	int i;
@@ -121,10 +121,17 @@ int SHA1Result(short[] Message_Digest)
 
     //}
 
-    for(i = 0; i < 5; ++i)
+    for(i = 0; i < 20; ++i)
     {
         int x = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
-        Message_Digest[i] = (short)x;
+        System.out.printf("\n%x >> 8 * ( 3 - ( %d & 0x03) )", Intermediate_Hash[i>>2], i);
+        in.nextLine();
+        
+        Message_Digest[i] = (byte)x;
+        //Message_Digest[i] = test1;
+        System.out.printf("\n\n%02x",(byte)x);
+        in.nextLine();
+        
     }
 
     return 0;
@@ -211,7 +218,7 @@ int SHA1Input(char[] message_array, int length)
     System.out.printf("hex value is %1$#x, %1$#X\n", test );
     System.out.print(test);*/
 
-    System.out.printf("%1$x", hex);
+    System.out.printf("%x", hex);
     in.nextLine();
     
     //hex = test << 8;
@@ -219,7 +226,7 @@ int SHA1Input(char[] message_array, int length)
     //System.out.print(hex);
     //in.nextLine();   
     
-    Message_Block[Message_Block_Index++] = (short)hex; 
+    Message_Block[Message_Block_Index++] = (byte)hex; 
     
     short xyz = (short)hex;
     System.out.printf("%1$x", xyz);
@@ -265,7 +272,7 @@ System.out.println("In SHA1ProcessMessageBlock method");
     int      t;                 /* Loop counter                */
     int      temp;              /* Temporary word value        */
     int[]    W = new int[80];   /* Word sequence               */
-    int     A, B, C, D, E;     /* Word buffers                */
+    int     A, B, C, D, E;      /* Word buffers                */
 
     /*
      *  Initialize the first 16 words in the array W
@@ -291,7 +298,7 @@ System.out.println("In SHA1ProcessMessageBlock method");
         System.out.printf("%1$x\n", W[t]);
     in.nextLine();
     
-        test = Message_Block[t * 4 + 3];
+        test = Message_Block[t * 4 + 3] & 0xFF;
         W[t] |= test;
         System.out.printf("%1$x\n", test);
         System.out.printf("%1$x\n", W[t]);
@@ -301,7 +308,7 @@ System.out.println("In SHA1ProcessMessageBlock method");
     for(t = 16; t < 80; t++)
     {
                         int x = W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16];
-                        W[t] = ((x << 1) | (x >>> 31));                
+                        W[t] = (x << 1);                
     }
 
     A = Intermediate_Hash[0];
@@ -314,7 +321,7 @@ int q,y,e,r;
 /** First 20 rounds */
     for(t = 0; t < 20; t++)
     {
-    System.out.printf("Entered Round%d...\n\n",t);
+    System.out.printf("Loop1 -> Entered Round%d...\n\n",t);
     	q = (A << 5) ;
     	System.out.printf("%1$x", q);
     in.nextLine();
@@ -345,6 +352,7 @@ int q,y,e,r;
 /** Next 20 rounds */
     for(t = 20; t < 40; t++)
     {
+    System.out.printf("Loop2 -> Entered Round%d...\n\n",t);
         temp = (A << 5) + (B ^ C ^ D) + E + W[t] + K[1];
         E = D;
         D = C;
@@ -358,6 +366,7 @@ int q,y,e,r;
 /** Next 20 rounds */
     for(t = 40; t < 60; t++)
     {
+    System.out.printf("Loop3 -> Entered Round%d...\n\n",t);
         temp = (A << 5) + ((B & C) | (B & D) | (C & D)) + E + W[t] + K[2];
         E = D;
         D = C;
@@ -371,6 +380,7 @@ int q,y,e,r;
 /** Next 20 rounds */
     for(t = 60; t < 80; t++)
     {
+    	System.out.printf("Loop4 -> Entered Round%d...\n\n",t);
         temp = (A << 5) + (B ^ C ^ D) + E + W[t] + K[3];
         E = D;
         D = C;
@@ -382,10 +392,16 @@ int q,y,e,r;
     }
 
     Intermediate_Hash[0] += A;
+    System.out.printf("%1$x",Intermediate_Hash[0]);
     Intermediate_Hash[1] += B;
+        System.out.printf("%1$x",Intermediate_Hash[1]);
     Intermediate_Hash[2] += C;
+        System.out.printf("%1$x",Intermediate_Hash[2]);
     Intermediate_Hash[3] += D;
+        System.out.printf("%1$x",Intermediate_Hash[3]);
     Intermediate_Hash[4] += E;
+        System.out.printf("%1$x",Intermediate_Hash[4]);
+
 
     Message_Block_Index = 0;
 }
@@ -403,7 +419,7 @@ void SHA1PadMessage()
     
     if (Message_Block_Index > 55)
     {
-        Message_Block[Message_Block_Index++] = (short)0x80;
+        Message_Block[Message_Block_Index++] = (byte)0x80;
         while(Message_Block_Index < 64)
         {
             Message_Block[Message_Block_Index++] = 0;
@@ -418,7 +434,7 @@ void SHA1PadMessage()
     }
     else
     {
-        Message_Block[Message_Block_Index++] = (short)0x80;
+        Message_Block[Message_Block_Index++] = (byte)0x80;
         
         short abc = (short)0x80;
         System.out.printf("%1$x", abc);
@@ -436,26 +452,26 @@ void SHA1PadMessage()
      *  Store the message length as the last 8 octets
      */
     
-    long y = Length_High >> 24;
-    Message_Block[56] = (short)y;
+    int y = Length_High >> 24;
+    Message_Block[56] = (byte)y;
     
-    long z = Length_High >> 16;
-    Message_Block[57] = (short)z;
+    int z = Length_High >> 16;
+    Message_Block[57] = (byte)z;
     
-    long w = Length_High >> 8;
-    Message_Block[58] = (short)w;
-    Message_Block[59] = (short)Length_High;
+    int w = Length_High >> 8;
+    Message_Block[58] = (byte)w;
+    Message_Block[59] = (byte)Length_High;
     
     
     y = Length_Low >> 24;
-    Message_Block[60] = (short)y;
+    Message_Block[60] = (byte)y;
     
     z = Length_Low >> 16;
-    Message_Block[61] = (short)z;
+    Message_Block[61] = (byte)z;
     
     w = Length_Low >> 8;
-    Message_Block[62] = (short)w;
-    Message_Block[63] = (short)Length_Low; 
+    Message_Block[62] = (byte)w;
+    Message_Block[63] = (byte)Length_Low; 
 
     SHA1ProcessMessageBlock();
 

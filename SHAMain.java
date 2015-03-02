@@ -18,7 +18,7 @@ String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9
     
     int i, j; 
     
-    short[] Message_Digest = new short[20];
+    byte[] Message_Digest = new byte[20];
 
     /*
      *  Perform SHA-1 tests
@@ -32,10 +32,12 @@ String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9
     
        	context.SHA1Result(Message_Digest);
          
+
+            System.out.println("Result #:\n");
             System.out.println("\t");
-            for(i = 0; i < 20 ; i++)
+            for(i = 0; i < 20 ; ++i)
             {
-                System.out.format("%02X ", Message_Digest[i]);
+                System.out.printf("%02X ", Message_Digest[i]);
             }
             System.out.println("\n");
         
