@@ -214,7 +214,7 @@ int SHA1Input(char[] message_array, int length)
 
     hex = (int)ch & 0xFF;
     
-   /* System.out.printf("hex value is %1$x, %1$X\n", test );
+   /* System.out.printf("hex value is %x, %1$X\n", test );
     System.out.printf("hex value is %1$#x, %1$#X\n", test );
     System.out.print(test);*/
 
@@ -229,7 +229,7 @@ int SHA1Input(char[] message_array, int length)
     Message_Block[Message_Block_Index++] = (byte)hex; 
     
     short xyz = (short)hex;
-    System.out.printf("%1$x", xyz);
+    System.out.printf("%x", xyz);
     in.nextLine();
     
     Length_Low += 8;
@@ -283,25 +283,25 @@ System.out.println("In SHA1ProcessMessageBlock method");
     System.out.printf("---------------Iteration: %d-----------------\n\n",t);
         test = Message_Block[t * 4] << 24;
         W[t] = test;
-        System.out.printf("%1$x\n", test);
+        System.out.printf("%x\n", test);
     in.nextLine();
     
         test = Message_Block[t * 4 + 1] << 16;
         W[t] |= test;
-        System.out.printf("%1$x\n", test);
-        System.out.printf("%1$x\n", W[t]);
+        System.out.printf("%x\n", test);
+        System.out.printf("%x\n", W[t]);
     in.nextLine();
     
         test = Message_Block[t * 4 + 2] << 8;
         W[t] |= test;
-        System.out.printf("%1$x\n", test);
-        System.out.printf("%1$x\n", W[t]);
+        System.out.printf("%x\n", test);
+        System.out.printf("%x\n", W[t]);
     in.nextLine();
     
         test = Message_Block[t * 4 + 3] & 0xFF;
         W[t] |= test;
-        System.out.printf("%1$x\n", test);
-        System.out.printf("%1$x\n", W[t]);
+        System.out.printf("%x\n", test);
+        System.out.printf("%x\n", W[t]);
     in.nextLine();
     }
 
@@ -322,44 +322,46 @@ int q,y,e,r;
     for(t = 0; t < 20; t++)
     {
     System.out.printf("Loop1 -> Entered Round%d...\n\n",t);
-    	q = (A << 5) ;
-    	System.out.printf("%1$x", q);
+    	q = (A << 5 | A >>> 27) ;
+    	System.out.printf("%x", q);
     in.nextLine();
     
     	y = ((B & C) | ((~B) & D));
-    	System.out.printf("%1$x", y);
+    	System.out.printf("%x", y);
     in.nextLine(); 
     
     	e = E ;
-    	System.out.printf("%1$x", e);
+    	System.out.printf("%x", e);
     in.nextLine();
     
     	r = W[t] + K[0];
-    	System.out.printf("%1$x", r);
+    	System.out.printf("%x", r);
     in.nextLine();
     
         temp =  q + y + e + r;
         E = D;
         D = C;
-        C = (B >>> 2);
+        C = (B << 30 | B >>> 2);
         B = A;
         A = temp;
         
-    System.out.printf("%1$x", temp);
-    in.nextLine();
+    System.out.printf("%x", temp);
+    //in.nextLine();
     }
 
 /** Next 20 rounds */
     for(t = 20; t < 40; t++)
     {
     System.out.printf("Loop2 -> Entered Round%d...\n\n",t);
-        temp = (A << 5) + (B ^ C ^ D) + E + W[t] + K[1];
+        temp = (A << 5 | A >>> 27) + (B ^ C ^ D) + E + W[t] + K[1];
+        System.out.printf("%x\n",(B ^ C ^ D) + E + W[t] + K[1]);
+        System.out.printf("%x\n", (A << 5 | A >>> 27));
         E = D;
         D = C;
-        C = (B >>> 2);
+        C = (B << 30 | B >>> 2);
         B = A;
         A = temp;
-        System.out.printf("%1$x", temp);
+        System.out.printf("%x", temp);
     in.nextLine();
     }
 
@@ -367,13 +369,13 @@ int q,y,e,r;
     for(t = 40; t < 60; t++)
     {
     System.out.printf("Loop3 -> Entered Round%d...\n\n",t);
-        temp = (A << 5) + ((B & C) | (B & D) | (C & D)) + E + W[t] + K[2];
+        temp = (A << 5 | A >>> 27) + ((B & C) | (B & D) | (C & D)) + E + W[t] + K[2];
         E = D;
         D = C;
-        C = (B >>> 2);
+        C = (B << 30 | B >>> 2);
         B = A;
         A = temp;
-        System.out.printf("%1$x", temp);
+        System.out.printf("%x", temp);
     in.nextLine();
     }
 
@@ -381,26 +383,26 @@ int q,y,e,r;
     for(t = 60; t < 80; t++)
     {
     	System.out.printf("Loop4 -> Entered Round%d...\n\n",t);
-        temp = (A << 5) + (B ^ C ^ D) + E + W[t] + K[3];
+        temp = (A << 5 | A >>> 27) + (B ^ C ^ D) + E + W[t] + K[3];
         E = D;
         D = C;
-        C = (B >>> 2);
+        C = (B << 30 | B >>> 2);
         B = A;
         A = temp;
-        System.out.printf("%1$x", temp);
+        System.out.printf("%x", temp);
     in.nextLine();
     }
 
     Intermediate_Hash[0] += A;
-    System.out.printf("%1$x",Intermediate_Hash[0]);
+    System.out.printf("%x",Intermediate_Hash[0]);
     Intermediate_Hash[1] += B;
-        System.out.printf("%1$x",Intermediate_Hash[1]);
+        System.out.printf("%x",Intermediate_Hash[1]);
     Intermediate_Hash[2] += C;
-        System.out.printf("%1$x",Intermediate_Hash[2]);
+        System.out.printf("%x",Intermediate_Hash[2]);
     Intermediate_Hash[3] += D;
-        System.out.printf("%1$x",Intermediate_Hash[3]);
+        System.out.printf("%x",Intermediate_Hash[3]);
     Intermediate_Hash[4] += E;
-        System.out.printf("%1$x",Intermediate_Hash[4]);
+        System.out.printf("%x",Intermediate_Hash[4]);
 
 
     Message_Block_Index = 0;
@@ -437,8 +439,8 @@ void SHA1PadMessage()
         Message_Block[Message_Block_Index++] = (byte)0x80;
         
         short abc = (short)0x80;
-        System.out.printf("%1$x", abc);
-        //System.out.printf("%1$x", W[t]);
+        System.out.printf("%x", abc);
+        //System.out.printf("%x", W[t]);
     in.nextLine();
         
         while(Message_Block_Index < 56)

@@ -347,7 +347,7 @@ int q,y,e,r;
         A = temp;
         
         printf("%x",temp); 
-        getchar();
+        //getchar();
     }
 
 /** Next 20 rounds */
@@ -355,6 +355,8 @@ int q,y,e,r;
     {
     printf("Loop2 -> Entered Round%d...\n\n",t);
         temp = SHA1CircularShift(5,A) + (B ^ C ^ D) + E + W[t] + K[1];
+        printf("%x\n",(B ^ C ^ D) + E + W[t] + K[1]);
+        printf("%x\n",SHA1CircularShift(5,A));
         E = D;
         D = C;
         C = SHA1CircularShift(30,B);

@@ -33,7 +33,7 @@ String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9
        	context.SHA1Result(Message_Digest);
          
 
-            System.out.println("Result #:\n");
+            System.out.println("Result #:");
             System.out.println("\t");
             for(i = 0; i < 20 ; ++i)
             {
