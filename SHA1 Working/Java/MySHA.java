@@ -121,12 +121,12 @@ public class MySHA{
     {
       int x = Intermediate_Hash[i>>2] >> 8 * ( 3 - ( i & 0x03 ) );
       System.out.printf("\n%x >> 8 * ( 3 - ( %d & 0x03) )", Intermediate_Hash[i>>2], i);
-      ////in.nextLine();
+      in.nextLine();
       
       Message_Digest[i] = (byte)x;
       //Message_Digest[i] = test1;
       System.out.printf("\n\n%02x",(byte)x);
-      ////in.nextLine();
+      in.nextLine();
       
     }
     
@@ -190,7 +190,7 @@ public class MySHA{
      }*/
     System.out.print(message_array[0]);
     System.out.print(length);
-    ////in.nextLine();
+    in.nextLine();
     
     char ch;
     int hex;
@@ -198,22 +198,22 @@ public class MySHA{
     for (int i = 0; i < length /*&& Corrupted != 0*/; ++i )
     {
       System.out.println("Enters for loop");
-      ////in.nextLine();
+      in.nextLine();
       
       ch = message_array[i];
       
       System.out.print(ch);
-      ////in.nextLine();
+      in.nextLine();
       //hex[i] = String.format("%02x", (int) ch);
       
       hex = (int)ch & 0xFF;
       
-      /* System.out.printf("hex value is %x, %1$X\n", test );
+      /*System.out.printf("hex value is %x, %1$X\n", test );
        System.out.printf("hex value is %1$#x, %1$#X\n", test );
        System.out.print(test);*/
       
       System.out.printf("%x", hex);
-      ////in.nextLine();
+      in.nextLine();
       
       //hex = test << 8;
       
@@ -222,13 +222,13 @@ public class MySHA{
       
       Message_Block[Message_Block_Index++] = (byte)hex; 
       
-      short xyz = (short)hex;
+      byte xyz = (byte)hex;
       System.out.printf("%x", xyz);
-      ////in.nextLine();
+      in.nextLine();
       
       Length_Low += 8;
       System.out.print(Length_Low);
-      ////in.nextLine();
+      in.nextLine();
       
       /*if (Length_Low == 0)
        {
@@ -250,7 +250,7 @@ public class MySHA{
   
   void SHA1ProcessMessageBlock()
   {
-    System.out.println("In SHA1ProcessMessageBlock method");
+    //System.out.println("In SHA1ProcessMessageBlock method");
     
     final int K[] = {       /* Constants defined in SHA-1   */
       0x5A827999,
@@ -262,7 +262,7 @@ public class MySHA{
     int      t;                 /* Loop counter                */
     int      temp;              /* Temporary word value        */
     int[]    W = new int[80];   /* Word sequence               */
-    int     A, B, C, D, E;      /* Word buffers                */
+    int      A, B, C, D, E;     /* Word buffers                */
     
     /*
      *  Initialize the first 16 words in the array W
@@ -274,25 +274,25 @@ public class MySHA{
       test = Message_Block[t * 4] << 24;
       W[t] = test;
       System.out.printf("%x\n", test);
-      ////in.nextLine();
+      in.nextLine();
       
-      test = Message_Block[t * 4 + 1] << 16;
+      test = (Message_Block[t * 4 + 1] << 16) & 0xFFFFFF;
+      W[t] |= test;
+      System.out.printf("val of test is %x\n", test);
+      System.out.printf("Value of W[t] is %x\n", W[t]);
+      in.nextLine();
+      
+      test = (Message_Block[t * 4 + 2] << 8) & 0xFFFF;
       W[t] |= test;
       System.out.printf("%x\n", test);
       System.out.printf("%x\n", W[t]);
-      ////in.nextLine();
-      
-      test = Message_Block[t * 4 + 2] << 8;
-      W[t] |= test;
-      System.out.printf("%x\n", test);
-      System.out.printf("%x\n", W[t]);
-      ////in.nextLine();
+      in.nextLine();
       
       test = Message_Block[t * 4 + 3] & 0xFF;
       W[t] |= test;
       System.out.printf("%x\n", test);
       System.out.printf("%x\n", W[t]);
-      ////in.nextLine();
+      in.nextLine();
     }
     
     for(t = 16; t < 80; t++)
@@ -330,7 +330,7 @@ public class MySHA{
       System.out.printf("%x\n", e);
       System.out.printf("%x\n", r);
       System.out.printf("%x\n", temp);   
-      //in.nextLine();
+      in.nextLine();
     }
     
     /** Next 20 rounds */
@@ -340,7 +340,7 @@ public class MySHA{
       temp = (A << 5 | A >>> 27) + (B ^ C ^ D) + E + W[t] + K[1];
       
       System.out.printf("%x\n", temp);
-      //in.nextLine();
+      in.nextLine();
       
       E = D;
       D = C;
@@ -360,7 +360,7 @@ public class MySHA{
       B = A;
       A = temp;
       System.out.printf("%x", temp);
-      //in.nextLine();
+      in.nextLine();
     }
     
     /** Next 20 rounds */
@@ -374,7 +374,7 @@ public class MySHA{
       B = A;
       A = temp;
       System.out.printf("%x", temp);
-      //in.nextLine();
+      in.nextLine();
     }
     
     Intermediate_Hash[0] += A;
@@ -420,8 +420,8 @@ public class MySHA{
     {
       Message_Block[Message_Block_Index++] = (byte)0x80;
       
-      short abc = (short)0x80;
-      System.out.printf("%x", abc);
+      //byte abc = (byte)0x80;
+      //System.out.printf("%x", abc);
       //System.out.printf("%x", W[t]);
       //in.nextLine();
       
@@ -454,3 +454,5 @@ public class MySHA{
     SHA1ProcessMessageBlock();    
   }
 }
+
+

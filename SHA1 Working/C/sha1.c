@@ -283,25 +283,25 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
         test = context->Message_Block[t * 4] << 24;
         W[t] = test;
         printf("%x", test);
-        //getchar();
+        getchar();
         
         test = context->Message_Block[t * 4 + 1] << 16;
         W[t] |= test;
         printf("%x\n", test);
         printf("%x\n", W[t]);
-        //getchar();
+        getchar();
         
         test = context->Message_Block[t * 4 + 2] << 8;
         W[t] |= test;
         printf("%x\n", test);
         printf("%x\n", W[t]);
-        //getchar();
+        getchar();
         
         test = context->Message_Block[t * 4 + 3];
         W[t] |= test;
         printf("%x\n", test);
         printf("%x\n", W[t]);
-        //getchar();
+        getchar();
     }
 
     for(t = 16; t < 80; t++)

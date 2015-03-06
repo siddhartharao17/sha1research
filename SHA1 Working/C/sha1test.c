@@ -27,13 +27,13 @@
 /*
  *  Define patterns for testing
  */
-#define TEST1   "abc"
+#define TEST1   "a"
 #define TEST2a  "abcdbcdecdefdefgefghfghighijhi"
 
 
 #define TEST2b  "jkijkljklmklmnlmnomnopnopq"
 #define TEST2   TEST2a TEST2b
-#define TEST3   "a"
+#define TEST3   "abc"
 #define TEST4a  "01234567012345670123456701234567"
 #define TEST4b  "01234567012345670123456701234567"
     /* an exact multiple of 512 bits */ 
@@ -48,9 +48,10 @@ char *testarray[4] =
 long int repeatcount[4] = { 1, 1, 1000000, 10 };
 char *resultarray[4] = 
 {
-    "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D",
+    //"34 AA 97 3C D4 C4 DA A4 F6 1E EB 2B DB AD 27 31 65 34 01 6F",
+    "86 F7 E4 37 FA A5 A7 FC E1 5D 1D DC B9 EA EA EA 37 76 67 B8",
     "84 98 3E 44 1C 3B D2 6E BA AE 4A A1 F9 51 29 E5 E5 46 70 F1",
-    "34 AA 97 3C D4 C4 DA A4 F6 1E EB 2B DB AD 27 31 65 34 01 6F",
+    "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D",
     "DE A3 56 A2 CD DD 90 C7 A7 EC ED C5 EB B5 63 93 4F 46 04 52"
 };
 
