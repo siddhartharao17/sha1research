@@ -2,7 +2,7 @@ public class SHAMain
 {  
   public static void main(String args[])
   { 
-    String testarray = "01234567012345670123456701234567012345670123456701234567";
+    String testarray = "abc";
     String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D";
     
     //String testarray = "a";
