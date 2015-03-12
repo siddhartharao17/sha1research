@@ -1,8 +1,15 @@
+import java.io.FileInputStream;
+
 public class SHAMain
 {  
   public static void main(String args[])
   { 
-    String testarray = "abc";
+    
+    String file = "fx.jpg";
+    //String file = "test.txt";  
+    FileInputStream filename = new FileInputStream(file);
+    
+    //String testarray = "abc";
     //String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D";
     
     //String testarray = "a";
@@ -25,9 +32,17 @@ public class SHAMain
     /* Perform SHA-1 tests */
     
     context = new MySHA(); /* Object created */
-    char[] charArray = testarray.toCharArray();
+    //char[] charArray = testarray.toCharArray();
     
-    context.SHA1Input(charArray, testarray.length());
+    byte[] charArray = new byte[64];
+    
+    int bytesRead = 0;
+     while ((bytesRead = filename.read(charArray)) != -1) {
+                    
+                    context.SHA1Input(charArray, bytesRead);
+     }
+     
+    //context.SHA1Input(charArray, bytesRead);
     context.SHA1Result(Message_Digest);
 
     System.out.print("\nResult #:\t");
@@ -37,5 +52,7 @@ public class SHAMain
     
       System.out.println();
    // System.out.println("\nShould Match #:\t"+resultarray);
+   
+   filename.close();
   }
 }

@@ -162,7 +162,7 @@ public class MySHA{
    }*/
   
   
-  int SHA1Input(char[] message_array, int length)
+  int SHA1Input(byte[] message_array, int length)
   {
     
     //char[] charArray = message_array.toCharArray();
@@ -193,7 +193,7 @@ public class MySHA{
     //System.out.print(length);
     //in.nextLine();
     
-    char ch;
+    byte ch;
     int hex;
     //while(/*length--length != 0 && */ Corrupted != 0)
     for (int i = 0; i < length /*&& Corrupted != 0*/; ++i )

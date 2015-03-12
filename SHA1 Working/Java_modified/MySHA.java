@@ -164,7 +164,7 @@ public class MySHA{
    }*/
   
   
-  int SHA1Input(char[] message_array, int length)
+  int SHA1Input(byte[] message_array, int length)
   {
     
     //char[] charArray = message_array.toCharArray();
