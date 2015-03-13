@@ -29,7 +29,6 @@ public class SHAMain
     
     short[] Message_Digest = new short[20];
     
-    /* Perform SHA-1 tests */
     
     context = new MySHA(); /* Object created */
     //char[] charArray = testarray.toCharArray();

@@ -3,29 +3,7 @@ import java.util.Scanner;
 public class MySHA{
   
   Scanner in = new Scanner(System.in);
-  /**public enum Msg{
-    shaSuccess = 0,
-    shaNull,            /* Null pointer parameter
-    shaInputTooLong,    /* input data too long
-    shaStateError       /* called Input after Result 
-    };*/
   
-  /**
-   int SHA1Reset(  SHA1Context *);
-   int SHA1Input(  SHA1Context *,
-   const uint8_t *,
-   unsigned int);
-   int SHA1Result( SHA1Context *,
-   uint8_t Message_Digest[SHA1HashSize]);
-   
-   /* Local Function Prototyptes 
-   void SHA1PadMessage(SHA1Context *);
-   void SHA1ProcessMessageBlock(SHA1Context *);
-   
-   
-   */
-  
-  //public final long SHA1HashSize = 20;
   
   long[] Intermediate_Hash = {
     0x6745230167452301L,
@@ -43,32 +21,6 @@ public class MySHA{
   //byte[] Message_Block = new byte[128];      /* 1024-bit message blocks      */
   
   short[] Message_Block = new short[64];      /* 1024-bit message blocks      */
-  //int Computed;               /* Is the digest computed?         */
-  //int Corrupted;             /* Is the message digest corrupted? */
-  
-  
-  /**int SHA1Reset(SHA1Context *context)
-    {
-    if (!context)
-    {
-    return shaNull;
-    }
-    
-    context->Length_Low             = 0;
-    context->Length_High            = 0;
-    context->Message_Block_Index    = 0;
-    
-    context->Intermediate_Hash[0]   = 0x67452301;
-    context->Intermediate_Hash[1]   = 0xEFCDAB89;
-    context->Intermediate_Hash[2]   = 0x98BADCFE;
-    context->Intermediate_Hash[3]   = 0x10325476;
-    context->Intermediate_Hash[4]   = 0xC3D2E1F0;
-    
-    context->Computed   = 0;
-    context->Corrupted  = 0;
-
-    return shaSuccess;
-    }*/
   
   
   public MySHA(){ 
@@ -76,16 +28,9 @@ public class MySHA{
     Length_Low = 0;
     Length_High = 0;
     Message_Block_Index = 0;
-    
-//     Computed   = 0;
-//     Corrupted  = 0;
-    
+        
   }
   
-  /*public long SHA1Reset(){
-   * 
-   MySHA();
-   }*/
   
   
   int SHA1Result(short[] Message_Digest)
@@ -93,19 +38,7 @@ public class MySHA{
     
     int i;
     
-    /*    if (Message_Digest.equals(null))
-     {
-     return 1;
-     }
      
-     if (Corrupted > 0)
-     {
-     return Corrupted;
-     }
-     
-     if (Computed == 0)*/
-    //{
-    
     SHA1PadMessage();
     
     /* message may be sensitive, clear it out */
@@ -114,21 +47,17 @@ public class MySHA{
     
     Length_Low = 0;    /* and clear length */
     Length_High = 0;
-    //Computed = 1;
-    
-    //}
     
     for(i = 0; i < 20; ++i)
     {
-//      long x = Intermediate_Hash[i>>3] >> 8 * ( 7 - ( i & 0x07 ) );
 	long x = Intermediate_Hash[i>>2] >> 16 * ( 3 - ( i & 0x03 ) );
-      System.out.printf("\n%x >> 8 * ( 3 - ( %d & 0x03) )", Intermediate_Hash[i>>2], i);
-      in.nextLine();
+      //System.out.printf("\n%x >> 8 * ( 3 - ( %d & 0x03) )", Intermediate_Hash[i>>2], i);
+      //in.nextLine();
       
       Message_Digest[i] = (short)x;
-      //Message_Digest[i] = test1;
-      System.out.printf("\n\n%02x",(short)x);
-      in.nextLine();
+      
+      //System.out.printf("\n\n%02x",(short)x);
+      //in.nextLine();
       
     }
     
@@ -170,77 +99,44 @@ public class MySHA{
     //char[] charArray = message_array.toCharArray();
     //int[] hex = new int[length];
     
-    /**if (length == 0)
-      {
-      return 0;
-      }
-      
-      if (message_array.equals(null))
-      {
-      return 1;
-      }*/
-    
-    /*if (Computed > 0)
-     {
-     Corrupted = 3;
-     return 3;
-     }
-     
-     if (Corrupted > 0)
-     {
-     return Corrupted;
-     }*/
-     
-    System.out.print(message_array[0]);
-    System.out.print(length);
-    in.nextLine();
+         
+    //System.out.print(message_array[0]);
+    //System.out.print(length);
+    //in.nextLine();
     
     char ch;
     int hex;
-    //while(/*length--length != 0 && */ Corrupted != 0)
-    for (int i = 0; i < length /*&& Corrupted != 0*/; ++i )
+    
+    for (int i = 0; i < length; ++i )
     {
-      System.out.println("Enters for loop");
-      in.nextLine();
+      //System.out.println("Enters for loop");
+      //in.nextLine();
       
       ch = message_array[i];
       
-      System.out.print(ch);
-      in.nextLine();
-      //hex[i] = String.format("%02x", (int) ch);
+      //System.out.print(ch);
+      //in.nextLine();
+      
       
       hex = (int)ch & 0xFF;
       
       //System.out.printf("hex value is %x \n", test );
       // System.out.print(test);
       
-      System.out.printf("%x", hex);
-      in.nextLine();
-      
-      //hex = test << 8;
+      //System.out.printf("%x", hex);
+      //in.nextLine();
       
       //System.out.print(hex);
       ////in.nextLine();   
       
       Message_Block[Message_Block_Index++] = (short)hex; 
       
-      /*byte xyz = (byte)hex;
-      System.out.printf("XYZ : %x", xyz);
-      in.nextLine();*/
+      
       
       Length_Low += 8;
       System.out.print(Length_Low);
       in.nextLine();
       
-      /*if (Length_Low == 0)
-       {
-       Length_High++;
-       if (Length_High == 0)
-       {
-       /* Message is too long 
-       Corrupted = 1;
-       }
-       }*/
       
       if (Message_Block_Index == 64)
         SHA1ProcessMessageBlock();
@@ -272,29 +168,29 @@ public class MySHA{
     long test; 
     for(t = 0; t < 16; t++)
     {
-      System.out.printf("---------------Iteration: %d-----------------\n\n",t);
-      test = Message_Block[t * 4] << 24;
-      W[t] = test;
-      System.out.printf("%x\n", test);
-      in.nextLine();
+      //System.out.printf("---------------Iteration: %d-----------------\n\n",t);
+      //test = Message_Block[t * 4] << 24;
+      W[t] = Message_Block[t * 4] << 24;;
+      //System.out.printf("%x\n", test);
+      //in.nextLine();
       
-      test = (Message_Block[t * 4 + 1] << 16) & 0xFFFFFF;
-      W[t] |= test;
-      System.out.printf("val of test is %x\n", test);
-      System.out.printf("Value of W[t] is %x\n", W[t]);
-      in.nextLine();
+      //test = (Message_Block[t * 4 + 1] << 16) & 0xFFFFFF;
+      W[t] |= (Message_Block[t * 4 + 1] << 16) & 0xFFFFFF;
+      //System.out.printf("val of test is %x\n", test);
+      //System.out.printf("Value of W[t] is %x\n", W[t]);
+      //in.nextLine();
       
-      test = (Message_Block[t * 4 + 2] << 8) & 0xFFFF;
-      W[t] |= test;
-      System.out.printf("%x\n", test);
-      System.out.printf("%x\n", W[t]);
-      in.nextLine();
+      //test = (Message_Block[t * 4 + 2] << 8) & 0xFFFF;
+      W[t] |= (Message_Block[t * 4 + 2] << 8) & 0xFFFF;
+      //System.out.printf("%x\n", test);
+      //System.out.printf("%x\n", W[t]);
+      //in.nextLine();
       
-      test = Message_Block[t * 4 + 3] & 0xFF;
-      W[t] |= test;
-      System.out.printf("%x\n", test);
-      System.out.printf("%x\n", W[t]);
-      in.nextLine();
+      //test = Message_Block[t * 4 + 3] & 0xFF;
+      W[t] |= Message_Block[t * 4 + 3] & 0xFF;
+      //System.out.printf("%x\n", test);
+      //System.out.printf("%x\n", W[t]);
+      //in.nextLine();
     }
     
     /* Fill in blocks W[16] to W[79] */
@@ -311,40 +207,41 @@ public class MySHA{
     D = Intermediate_Hash[3];
     E = Intermediate_Hash[4];
     
-    long q,y,e,r;
+    //long q,y,e,r;
     /** First 20 rounds */
     for(t = 0; t < 20; t++)
     {
-      System.out.printf("Loop1 -> Entered Round%d...\n\n",t);
+      //System.out.printf("Loop1 -> Entered Round%d...\n\n",t);
       
-      q = (A << 5 | A >>> 27) ;
+      /*q = (A << 5 | A >>> 27) ;
       y = ((B & C) | ((~B) & D));
       e = E ;
-      r = W[t] + K[0];
+      r = W[t] + K[0];*/
       
-      temp =  q + y + e + r;
+      //temp =  q + y + e + r;
+      temp = (A << 5 | A >>> 27) + ((B & C) | ((~B) & D)) + E + W[t] + K[0];
       E = D;
       D = C;
       C = (B << 30 | B >>> 2);
       B = A;
       A = temp;
       
-      System.out.printf("%x\n", q);
+      /*System.out.printf("%x\n", q);
       System.out.printf("%x\n", y);
       System.out.printf("%x\n", e);
       System.out.printf("%x\n", r);
       System.out.printf("%x\n", temp);   
-      in.nextLine();
+      in.nextLine();*/
     }
     
     /** Next 20 rounds */
     for(t = 20; t < 40; t++)
     {
-      System.out.printf("\n\nLoop2 -> Entered Round%d...\n\n",t);
+      //System.out.printf("\n\nLoop2 -> Entered Round%d...\n\n",t);
       temp = (A << 5 | A >>> 27) + (B ^ C ^ D) + E + W[t] + K[1];
       
-      System.out.printf("%x\n", temp);
-      in.nextLine();
+      //System.out.printf("%x\n", temp);
+      //in.nextLine();
       
       E = D;
       D = C;
@@ -356,41 +253,41 @@ public class MySHA{
     /** Next 20 rounds */
     for(t = 40; t < 60; t++)
     {
-      System.out.printf("Loop3 -> Entered Round%d...\n\n",t);
+      //System.out.printf("Loop3 -> Entered Round%d...\n\n",t);
       temp = (A << 5 | A >>> 27) + ((B & C) | (B & D) | (C & D)) + E + W[t] + K[2];
       E = D;
       D = C;
       C = (B << 30 | B >>> 2);
       B = A;
       A = temp;
-      System.out.printf("%x", temp);
-      in.nextLine();
+      //System.out.printf("%x", temp);
+      //in.nextLine();
     }
     
     /** Next 20 rounds */
     for(t = 60; t < 80; t++)
     {
-      System.out.printf("Loop4 -> Entered Round%d...\n\n",t);
+      //System.out.printf("Loop4 -> Entered Round%d...\n\n",t);
       temp = (A << 5 | A >>> 27) + (B ^ C ^ D) + E + W[t] + K[3];
       E = D;
       D = C;
       C = (B << 30 | B >>> 2);
       B = A;
       A = temp;
-      System.out.printf("%x", temp);
-      in.nextLine();
+      //System.out.printf("%x", temp);
+      //in.nextLine();
     }
     
     Intermediate_Hash[0] += A;
-    System.out.printf("%x",Intermediate_Hash[0]);
+    //System.out.printf("%x",Intermediate_Hash[0]);
     Intermediate_Hash[1] += B;
-    System.out.printf("%x",Intermediate_Hash[1]);
+    //System.out.printf("%x",Intermediate_Hash[1]);
     Intermediate_Hash[2] += C;
-    System.out.printf("%x",Intermediate_Hash[2]);
+    //System.out.printf("%x",Intermediate_Hash[2]);
     Intermediate_Hash[3] += D;
-    System.out.printf("%x",Intermediate_Hash[3]);
+    //System.out.printf("%x",Intermediate_Hash[3]);
     Intermediate_Hash[4] += E;
-    System.out.printf("%x",Intermediate_Hash[4]);
+    //System.out.printf("%x",Intermediate_Hash[4]);
 
     Message_Block_Index = 0;
   }
@@ -424,16 +321,40 @@ public class MySHA{
     {
       Message_Block[Message_Block_Index++] = (short)0x80;
       
-      //byte abc = (byte)0x80;
-      //System.out.printf("%x", abc);
-      //System.out.printf("%x", W[t]);
-      //in.nextLine();
-      
       while(Message_Block_Index < 56)
         Message_Block[Message_Block_Index++] = 0;
     }
+       
     
-    /* Store the message length as the last 16 octets */
+    /* Store the message length as the last 8 octets */
+    
+    int y = Length_High >> 24;
+    Message_Block[56] = (short)y;
+    
+    int z = Length_High >> 16;
+    Message_Block[57] = (short)z;
+    
+    int w = Length_High >> 8;
+    Message_Block[58] = (short)w;
+    Message_Block[59] = (short)Length_High;
+     
+    y = Length_Low >> 24;
+    Message_Block[60] = (short)y;
+    
+    z = Length_Low >> 16;
+    Message_Block[61] = (short)z;
+    
+    w = Length_Low >> 8;
+    Message_Block[62] = (short)w;
+    Message_Block[63] = (short)Length_Low; 
+    
+    SHA1ProcessMessageBlock();    
+  }
+}
+
+
+
+  /* Store the message length as the last 16 octets */ 
     
 /**    int p = Length_High >> 56;
     Message_Block[112] = (byte)p;
@@ -496,30 +417,6 @@ public class MySHA{
     System.out.printf("%d\n",(byte)w);
     
     Message_Block[127] = (byte)Length_Low;
-    System.out.printf("%d\n",(byte)Length_Low);  */
+    System.out.printf("%d\n",(byte)Length_Low); 
     
-    int y = Length_High >> 24;
-    Message_Block[56] = (short)y;
-    
-    int z = Length_High >> 16;
-    Message_Block[57] = (short)z;
-    
-    int w = Length_High >> 8;
-    Message_Block[58] = (short)w;
-    Message_Block[59] = (short)Length_High;
-     
-    y = Length_Low >> 24;
-    Message_Block[60] = (short)y;
-    
-    z = Length_Low >> 16;
-    Message_Block[61] = (short)z;
-    
-    w = Length_Low >> 8;
-    Message_Block[62] = (short)w;
-    Message_Block[63] = (short)Length_Low; 
-    
-    SHA1ProcessMessageBlock();    
-  }
-}
-
-
+*/     
