@@ -1,15 +1,13 @@
-import java.io.FileInputStream;
+import java.io.DataInputStream;
+//import java.io.FileInputStream;
 
-public class SHAMain
+public class SHATextMain
 {  
-  public static void main(String args[])
+  public static void main(String args[]) throws Exception
   { 
     
-    String file = "fx.jpg";
-    //String file = "test.txt";  
-    FileInputStream filename = new FileInputStream(file);
     
-    //String testarray = "abc";
+    String testarray = "abc";
     //String resultarray = "A9 99 3E 36 47 06 81 6A BA 3E 25 71 78 50 C2 6C 9C D0 D8 9D";
     
     //String testarray = "a";
@@ -25,23 +23,21 @@ public class SHAMain
     MySHA context;
     
     int i, j; 
-    //byte[] Message_Digest = new byte[40];
-    
     short[] Message_Digest = new short[20];
+    byte[] charArray = new byte[128];
     
-    
-    context = new MySHA(); /* Object created */
-    //char[] charArray = testarray.toCharArray();
-    
-    byte[] charArray = new byte[64];
+    /* Object created */
+    context = new MySHA(); 
+
     
     int bytesRead = 0;
-     while ((bytesRead = filename.read(charArray)) != -1) {
-                    
-                    context.SHA1Input(charArray, bytesRead);
-     }
      
-    //context.SHA1Input(charArray, bytesRead);
+    /* Records bytes and byte count */
+    charArray = testarray.getBytes();
+    bytesRead = charArray.length;
+    
+    /* Performs SHA1 tests */ 
+    context.SHA1Input(charArray, bytesRead);
     context.SHA1Result(Message_Digest);
 
     System.out.print("\nResult #:\t");
@@ -50,8 +46,6 @@ public class SHAMain
       System.out.printf("%04X ", Message_Digest[i]);
     
       System.out.println();
-   // System.out.println("\nShould Match #:\t"+resultarray);
    
-   filename.close();
   }
 }

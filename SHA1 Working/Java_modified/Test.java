@@ -3,11 +3,11 @@ class Test{
 
 public static void main(String[] args){
 
+byte a = 9798;
+short b = (short)a;
 
-long a = 0x61L;
-long b = a << 24;
+System.out.printf("%4x\n",b);
 
-System.out.printf("%x\n",b);
-
+//System.out.println(b);
 }
 }

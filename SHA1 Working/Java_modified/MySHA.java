@@ -18,7 +18,6 @@ public class MySHA{
   
   /* Index into message block array   */
   int Message_Block_Index;
-  //byte[] Message_Block = new byte[128];      /* 1024-bit message blocks      */
   
   short[] Message_Block = new short[64];      /* 1024-bit message blocks      */
   
@@ -104,7 +103,7 @@ public class MySHA{
     //System.out.print(length);
     //in.nextLine();
     
-    char ch;
+    byte ch;
     int hex;
     
     for (int i = 0; i < length; ++i )
@@ -118,7 +117,7 @@ public class MySHA{
       //in.nextLine();
       
       
-      hex = (int)ch & 0xFF;
+      hex = (int)ch & 0xFFFF;
       
       //System.out.printf("hex value is %x \n", test );
       // System.out.print(test);
@@ -132,10 +131,9 @@ public class MySHA{
       Message_Block[Message_Block_Index++] = (short)hex; 
       
       
-      
       Length_Low += 8;
-      System.out.print(Length_Low);
-      in.nextLine();
+      //System.out.print(Length_Low);
+      //in.nextLine();
       
       
       if (Message_Block_Index == 64)
@@ -302,7 +300,7 @@ public class MySHA{
      *  block.
      */
     
-    System.out.println("Inside SHA1PadMessage method");
+    //System.out.println("Inside SHA1PadMessage method");
     
     if (Message_Block_Index > 55)
     {
